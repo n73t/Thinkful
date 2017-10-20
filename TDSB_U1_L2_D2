@@ -1,23 +1,18 @@
--- hottest day was on the first date given by this query
--- could add 'limit 1' at the end to take the max, but there could be 2 max
+-- what was the hottest day and where was that 
 select
-	Date, 
-	max(MaxTemperatureF) maxTemp
+	Date,
+	ZIP,
+	MaxTemperatureF
 from 
 	weather
-group by Date
-order by maxTemp desc
-
--- location of the hottest day was 
-select 
-	ZIP
-from	
-	weather
 where 
-	MaxTemperatureF = 134
+	MaxTemperatureF = (select
+	max(MaxTemperatureF) maxTemp
+from 
+	weather)
   
 --------------------------------- 
--- number of trips started
+-- number of trips started at eachs station
 select 
 	start_station,
 	count(trip_id) numberTripsStarted
@@ -26,5 +21,26 @@ from
 group by start_station
 
 ---------------------------------
+-- what was the shortest trip that happened
+
+select 
+	trip_id,
+	cast(duration as float) durationF
+from 
+	trips
+where
+	durationF = (select 
+	min(cast(duration as float))
+	from trips)
+
+---------------------------------
+-- average trip duration by end station
+
+select
+	end_station,
+	avg(CAST(duration as float)) aveDuration
+from 
+	trips
+group by end_station
 
 
