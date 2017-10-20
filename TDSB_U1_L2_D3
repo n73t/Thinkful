@@ -1,0 +1,43 @@
+
+-- What are the three longest trips on rainy days?
+/* 
+join trips and weather by taking into account that date from weather could be either_start of end_date for trips
+match weather.ZIP to trips.zip_code as well
+Resulting table will have multiple references to the same trip if it starts and ends on a different day.
+*/
+
+with
+	locWeather
+as (
+select 
+	trips.trip_id,
+	trips.duration,
+	trips.start_date,
+	trips.end_date,
+	weather.PrecipitationIn,
+	weather.ZIP,
+	weather.Date
+from 
+	trips
+join
+	weather
+on 
+	trips.zip_code = weather.ZIP and
+	(date(trips.start_date)=date(weather.date) or date(trips.end_date) = date(weather.date))
+	)	
+	
+select
+--	trip_id,
+	cast(duration as float) durationF
+--	start_date,
+--	end_date,
+--	Date,
+--	PrecipitationIn
+from 
+	locWeather
+where 
+	locWeather.PrecipitationIn > 0 
+group by trip_id
+order by durationF desc
+limit 3
+
