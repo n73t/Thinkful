@@ -1,0 +1,30 @@
+-- hottest day was on the first date given by this query
+-- could add 'limit 1' at the end to take the max, but there could be 2 max
+select
+	Date, 
+	max(MaxTemperatureF) maxTemp
+from 
+	weather
+group by Date
+order by maxTemp desc
+
+-- location of the hottest day was 
+select 
+	ZIP
+from	
+	weather
+where 
+	MaxTemperatureF = 134
+  
+--------------------------------- 
+-- number of trips started
+select 
+	start_station,
+	count(trip_id) numberTripsStarted
+from 
+	trips
+group by start_station
+
+---------------------------------
+
+
