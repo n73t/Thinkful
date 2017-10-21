@@ -41,3 +41,28 @@ group by trip_id
 order by durationF desc
 limit 3
 
+----------------------------------------
+-- which station is empty most often
+
+with 
+	emptyStations
+as  
+(
+select
+	station_id,
+	timestamp
+from
+	status
+where
+	status.bikes_available = 18
+)
+
+select 
+	station_id,
+	count(timestamp) emptyIntervals
+from 
+	emptyStations
+group by 
+	station_id
+order by emptyIntervals desc
+limit 1
