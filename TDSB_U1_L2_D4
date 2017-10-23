@@ -57,5 +57,19 @@ group by listings.neighbourhood
 order by popularity desc
 limit 5
 -------------------------------
+-- What is the busiest time to go to your city?
 
-
+-- use the calendar file 
+-- proxy busyness by scarcity of postings 
+-- I interpret busy to refer to the difficulty of finding an apartment
+-- one could also make other argument: busy refers to when there are more apartments posted.
+select
+	strftime('%m', date(date)) mm,
+	count(*) postings
+from 
+	calendar
+where
+	available = 't'
+group by 
+	mm	
+order by postings
