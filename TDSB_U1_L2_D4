@@ -16,5 +16,46 @@ order by price desc
 limit 1
 
 ------------------------------
+-- What neighborhoods seem to be the most popular?
 
--- 
+-- Solution 1: I solve this by counting the number of listings on the assumption that this reflects popularity
+select
+	neighbourhood,
+	count(id) numberListings
+from
+	listings
+group by neighbourhood
+order by numberListings desc
+limit 5
+
+-- Solution 2: use number of reviews since 2016 for each listing in a neighbourhood to get popularity
+
+with 
+	listing_reviews
+as(
+	select
+		listing_id,
+		(case when strftime('%Y', date(date)) >= '2016' then 'keep' else 'drop' end) keep,
+		count(*) numberReviews
+	from
+		reviews
+	where 
+		keep = 'keep'
+	group by listing_id
+)
+
+select
+	listings.neighbourhood,
+	count(listing_reviews.numberReviews) popularity
+from	
+	listings
+join
+	listing_reviews
+on
+	listings.id = listing_reviews.listing_id
+group by listings.neighbourhood
+order by popularity desc
+
+-------------------------------
+
+
