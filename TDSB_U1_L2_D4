@@ -55,7 +55,7 @@ on
 	listings.id = listing_reviews.listing_id
 group by listings.neighbourhood
 order by popularity desc
-
+limit 5
 -------------------------------
 
 
