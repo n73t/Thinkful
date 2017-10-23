@@ -1,0 +1,20 @@
+
+-- Airbnb cities challenge - Washington, DC
+
+-- What's the most expensive listing? What else can you tell me about the listing?
+
+select
+	price,
+	neighbourhood, 
+	room_type,
+	minimum_nights,
+	number_of_reviews,
+	availability_365
+from 
+	listings
+order by price desc
+limit 1
+
+------------------------------
+
+-- 
