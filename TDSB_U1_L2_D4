@@ -46,7 +46,7 @@ as(
 
 select
 	listings.neighbourhood,
-	count(listing_reviews.numberReviews) popularity
+	sum(listing_reviews.numberReviews) popularity
 from	
 	listings
 join
